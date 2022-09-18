@@ -1,3 +1,6 @@
 from django.contrib import admin
+from AppTurismo.models import *
 
-# Register your models here.
+
+admin.site.register(PaqueteTuristico)
+admin.site.register(Cliente)
