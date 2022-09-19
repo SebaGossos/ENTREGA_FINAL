@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block inicio %}
+    
+    {% for info in dni %}
+        Nombre:  {{ info.nombre }} <br>
+        Apellido:  {{ info.apellido }} <br>
+        Email:  {{ info.email }} <br>
+        Celular:  {{ info.celular }} <br>
+        Dni:  {{ info.dni }} <br>
+        Emplado a cargo del cliente:  {{ info.empleado_asignado }} <br>
+        <h4>Apriete la X si desea eliminar la petición de su viaje <br><h2><a href="{% url 'AppEliminarPeticion' info.dni %}">X</a></h2></h4>
+    {% endfor %}
+
+{% endblock inicio %}

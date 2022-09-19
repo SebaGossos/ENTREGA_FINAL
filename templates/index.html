@@ -31,14 +31,20 @@
         <!-- Masthead-->
         <header class="masthead">
             <div class="container">
+                
 
                 {% block inicio %}
                 <h3> Esta es la pagina de inicio <h3/>
-                {% endblock %}<br><br><br><br><br><br>
-
+                {% endblock %}<br><br>
+                
+                {% for message in messages %}
+                <h4><p> {{ message }} </p></h4>
+                {% endfor %}<br>
+                
                 <div class="masthead-subheading">Welcome To Our Page!</div>
                 <div class="masthead-heading text-uppercase">It's Nice To Meet You</div>
                 <a class="btn btn-primary btn-xl text-uppercase" href="#services">Tell Me More</a>
+
             </div>
         </header>
 

@@ -16,4 +16,5 @@ class ClienteFormulario(forms.Form):
     celular = forms.IntegerField()
     dni = forms.IntegerField()
     
-
+class BusquedaPeticionFormulario(forms.Form):
+    dni = forms.IntegerField()

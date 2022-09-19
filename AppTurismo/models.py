@@ -16,7 +16,10 @@ class Cliente (models.Model):
     celular = models.PositiveIntegerField()
     dni = models.IntegerField(unique=True)
     empleado_asignado = models.CharField (max_length=33)
-    
+
+    def __str__(self, ):
+        return f'Nombre: {self.nombre}, Apellido: {self.apellido}, Dni: {self.dni}'
+
 
     
     

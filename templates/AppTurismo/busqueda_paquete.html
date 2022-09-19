@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block inicio %}
+
+    <form action= '/AppTurismo/busqueda_peticion_post' method='GET'>
+    {% csrf_token %}
+
+        {{form.as_p}}
+
+        <input type='submit' value={{Button_value}}>
+
+    </form>
+    
+{% endblock inicio %}

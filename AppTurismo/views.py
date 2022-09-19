@@ -33,6 +33,7 @@ def paquete_turistico (request):
         'form': PaqueteTuristicoFormulario(),
         'title': 'PAQUETE TURISTICO',
         'Button_value': 'Enviar',
+        
     }
     return render(request,'AppTurismo/formulario_universal.html', context)
 
@@ -54,6 +55,7 @@ def cliente (request):
                     )
             try:
                 cliente1.save()
+                messages.info('Se guardo su paquete de viaje')
                 return redirect('AppInicio')
             except:
                 messages.error(request, 'error')
@@ -64,6 +66,39 @@ def cliente (request):
         'form': ClienteFormulario(),
         'title': 'FORMULARIO CLIENTE',
         'Button_value': 'Enviar',
+        
     }
     
     return render(request, 'AppTurismo/formulario_universal.html', context)
+
+def busqueda_peticion_post (request):
+    
+    dni = request.GET.get('dni')
+    cliente1 = Cliente.objects.filter(dni__exact=dni)
+    
+    context = {
+    'dni': cliente1,
+    'title': 'BUSQUEDA CLIENTE',    
+    }    
+    return render(request, 'AppTurismo/busqueda_peticion_post.html', context)
+
+
+def busqueda_de_peticion(request):
+
+    context = {
+        'form': BusquedaPeticionFormulario(),
+        'title': 'BUSQUEDA PETICIÓN',
+        'Button_value': 'Buscar',
+        
+    }        
+    
+    return render(request, 'AppTurismo/busqueda_paquete.html', context)
+
+
+def elminar_peticion(request, dni):
+    
+    cliente_eliminar = Cliente.objects.get(dni=dni)
+    cliente_eliminar.delete()
+    messages.info(request, f'El Cliente {cliente_eliminar} fue eliminado')
+    
+    return redirect('AppInicio')
