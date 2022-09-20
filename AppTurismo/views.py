@@ -109,20 +109,30 @@ def elminar_peticion(request, dni):
 def editar_cliente(request, dni):
         try:
             cliente_editar = Cliente.objects.get(dni=dni)
+            id = cliente_editar.id
+            paquete_editar = PaqueteTuristico(id=id)
+            
             
             if request.method == 'POST':
                 mi_formulario = ClienteFormulario(request.POST)
+                mi_formulario1 = PaqueteTuristicoFormulario(request.POST)
                 
-                if mi_formulario.is_valid():
+                if mi_formulario.is_valid() and mi_formulario1.is_valid():
                     data = mi_formulario.cleaned_data
+                    data1 = mi_formulario1.cleaned_data
                     
                     cliente_editar.nombre = data.get('nombre')
                     cliente_editar.apellido = data.get('apellido')
                     cliente_editar.email = data.get('email')
                     cliente_editar.celular = data.get('celular')
                     cliente_editar.dni = data.get('dni')
-                    
                     cliente_editar.save()
+                    
+                    paquete_editar.lugares = data1.get('lugares')
+                    paquete_editar.fecha_de_entrada = data1.get('fecha_de_entrada')
+                    paquete_editar.fecha_de_salida = data1.get('fecha_de_salida')
+                    paquete_editar.save()
+                    
                     messages.info(request,'Se actualizo!')
                     return redirect('AppInicio')
             
@@ -135,6 +145,7 @@ def editar_cliente(request, dni):
             'title': 'EDITAR CLIENTE',
             'method': 'POST',
             'Button_value': 'Editar',
+            'info': 'Modificar Paquete de viaje contratado:',
             'form': ClienteFormulario(
                 initial= {
                     'dni': cliente_editar.dni,
@@ -142,6 +153,14 @@ def editar_cliente(request, dni):
                     'apellido': cliente_editar.apellido,
                     'email': cliente_editar.email,
                     'celular': cliente_editar.celular,   
+                }
+            ),
+            'form1': PaqueteTuristicoFormulario(
+                initial={
+                    'lugares': paquete_editar.lugares,
+                    'fecha_de_entrada': paquete_editar.fecha_de_entrada,
+                    'fecha_de_salida': paquete_editar.fecha_de_salida
+                    
                 }
             )
         }
