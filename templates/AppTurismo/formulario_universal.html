@@ -6,7 +6,7 @@
 
 {% block inicio %}
 
-    <form action= '' method='POST'>
+    <form action= '' method='{{ method }}'>
     {% csrf_token %}
 
         {{form.as_p}}

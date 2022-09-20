@@ -13,7 +13,8 @@
         Celular:  {{ info.celular }} <br>
         Dni:  {{ info.dni }} <br>
         Emplado a cargo del cliente:  {{ info.empleado_asignado }} <br>
-        <h4>Apriete la X si desea eliminar la petición de su viaje <br><h2><a href="{% url 'AppEliminarPeticion' info.dni %}">X</a></h2></h4>
+        <h4>Apriete la X si desea eliminar la petición de su viaje <br><h2><a href="{% url 'AppEliminarPeticion' info.dni %}">BORRAR CLIENTE</a></h2></h4>
+        <h2><a href="{% url 'AppEditarCliente' info.dni %}">EDITAR CLIENTE</a></h2>
     {% endfor %}
 
 {% endblock inicio %}

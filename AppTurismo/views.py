@@ -24,13 +24,14 @@ def paquete_turistico (request):
             return redirect('AppCliente')
 
         else:    
-            messages.error(request, 'error')
+            messages.error(request, 'error del paquete')
         
             return redirect('AppTurismoPaquete')
         
     
     context = {
         'form': PaqueteTuristicoFormulario(),
+        'method': 'POST',
         'title': 'PAQUETE TURISTICO',
         'Button_value': 'Enviar',
         
@@ -55,15 +56,16 @@ def cliente (request):
                     )
             try:
                 cliente1.save()
-                messages.info('Se guardo su paquete de viaje')
+                messages.info(request, 'Se guardo su paquete de viaje')
                 return redirect('AppInicio')
             except:
-                messages.error(request, 'error')
+                messages.error(request, 'error del cliente')
                 return redirect('AppCliente')
     
     
     context = {
         'form': ClienteFormulario(),
+        'method': 'POST',
         'title': 'FORMULARIO CLIENTE',
         'Button_value': 'Enviar',
         
@@ -102,3 +104,47 @@ def elminar_peticion(request, dni):
     messages.info(request, f'El Cliente {cliente_eliminar} fue eliminado')
     
     return redirect('AppInicio')
+
+
+def editar_cliente(request, dni):
+        try:
+            cliente_editar = Cliente.objects.get(dni=dni)
+            
+            if request.method == 'POST':
+                mi_formulario = ClienteFormulario(request.POST)
+                
+                if mi_formulario.is_valid():
+                    data = mi_formulario.cleaned_data
+                    
+                    cliente_editar.nombre = data.get('nombre')
+                    cliente_editar.apellido = data.get('apellido')
+                    cliente_editar.email = data.get('email')
+                    cliente_editar.celular = data.get('celular')
+                    cliente_editar.dni = data.get('dni')
+                    
+                    cliente_editar.save()
+                    messages.info(request,'Se actualizo!')
+                    return redirect('AppInicio')
+            
+                    
+        except:    
+            messages.info(request,'error, no se actualizo')
+        
+        
+        context = {
+            'title': 'EDITAR CLIENTE',
+            'method': 'POST',
+            'Button_value': 'Editar',
+            'form': ClienteFormulario(
+                initial= {
+                    'dni': cliente_editar.dni,
+                    'nombre': cliente_editar.nombre,
+                    'apellido': cliente_editar.apellido,
+                    'email': cliente_editar.email,
+                    'celular': cliente_editar.celular,   
+                }
+            )
+        }
+    
+        return render(request, 'AppTurismo/formulario_universal.html', context)
+    
