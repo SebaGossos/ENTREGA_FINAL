@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block inicio %}
+
+    <form action= '' method='{{ method }}'>
+    {% csrf_token %}
+        <h4>{{info}}</h4>
+        {{form.as_p}}
+        
+        {{form1.as_p}}
+
+        <input type='submit' value={{Button_value}}>
+
+    </form>
+
+
+{% endblock inicio %}

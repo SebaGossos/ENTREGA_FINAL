@@ -39,7 +39,6 @@ def paquete_turistico (request):
     return render(request,'AppTurismo/formulario_universal.html', context)
 
 
-
 def cliente (request):
     names = ['Messi', 'Cr7', 'Alberto', 'Mirta', 'Raul', 'Ibai']
     choice_name = random.choice(names)
@@ -72,6 +71,7 @@ def cliente (request):
     }
     
     return render(request, 'AppTurismo/formulario_universal.html', context)
+
 
 def busqueda_peticion_post (request):
     
