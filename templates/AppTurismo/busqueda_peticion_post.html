@@ -13,6 +13,12 @@
         Celular:  {{ info.celular }} <br>
         Dni:  {{ info.dni }} <br>
         Emplado a cargo del cliente:  {{ info.empleado_asignado }} <br>
+        <h2> Paquete contratado: </h2>
+        {% for paquete in id %}
+            Lugar Contratado: {{ paquete.lugares }}<br>
+            Fecha de entrada: {{ paquete.fecha_de_entrada }}<br>
+            Fecha de salida: {{ paquete.fecha_de_salida }}<br><br>
+        {% endfor %}
         <h4>Apriete la X si desea eliminar la petición de su viaje <br><h2><a href="{% url 'AppEliminarPeticion' info.dni %}">BORRAR CLIENTE</a></h2></h4>
         <h2><a href="{% url 'AppEditarCliente' info.dni %}">EDITAR CLIENTE</a></h2>
     {% endfor %}

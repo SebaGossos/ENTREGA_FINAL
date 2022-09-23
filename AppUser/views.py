@@ -5,6 +5,7 @@ from django.contrib import messages
 from AppUser.forms import *
 
 
+
 def login_request (request):
     
     if request.method == 'POST':
@@ -28,7 +29,6 @@ def login_request (request):
                 
         else:
             messages.info(request, 'Formulario incorrecto') 
-            
     
     context = {
         'form': AuthenticationForm(),

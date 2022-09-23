@@ -1,14 +1,15 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from AppTurismo.forms import *
 from AppTurismo.models import *
 import random
 
-
+@login_required
 def inicio(request):
     return render(request, 'index.html')
 
-
+@login_required
 def paquete_turistico (request):
     
     if request.method == 'POST':
@@ -38,7 +39,7 @@ def paquete_turistico (request):
     }
     return render(request,'AppTurismo/formulario_universal.html', context)
 
-
+@login_required
 def cliente (request):
     names = ['Messi', 'Cr7', 'Alberto', 'Mirta', 'Raul', 'Ibai']
     choice_name = random.choice(names)
@@ -72,19 +73,23 @@ def cliente (request):
     
     return render(request, 'AppTurismo/formulario_universal.html', context)
 
-
+@login_required
 def busqueda_peticion_post (request):
     
     dni = request.GET.get('dni')
     cliente1 = Cliente.objects.filter(dni__exact=dni)
+    idcliente = (cliente1)
+    for id in idcliente:
+        paquete_editar = PaqueteTuristico.objects.filter(id__exact=id.id)
     
     context = {
+    'id': paquete_editar,
     'dni': cliente1,
     'title': 'BUSQUEDA CLIENTE',    
     }    
     return render(request, 'AppTurismo/busqueda_peticion_post.html', context)
 
-
+@login_required
 def busqueda_de_peticion(request):
 
     context = {
@@ -96,7 +101,7 @@ def busqueda_de_peticion(request):
     
     return render(request, 'AppTurismo/busqueda_paquete.html', context)
 
-
+@login_required
 def elminar_peticion(request, dni):
     
     cliente_eliminar = Cliente.objects.get(dni=dni)
@@ -105,7 +110,7 @@ def elminar_peticion(request, dni):
     
     return redirect('AppInicio')
 
-
+@login_required
 def editar_cliente(request, dni):
         try:
             cliente_editar = Cliente.objects.get(dni=dni)
