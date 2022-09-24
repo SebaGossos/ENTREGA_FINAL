@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from AppUser.forms import *
 
 
@@ -62,4 +63,33 @@ def register(request):
     return render(request, 'AppUser/formulario_universal.html', context)
 
 
-
+@login_required
+def edit_user(request):
+    usuario = request.user
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            
+            usuario.username = data.get('username')
+            usuario.first_name = data.get('first_name')
+            usuario.last_name = data.get('last_name')
+            usuario.email = data.get('email')
+            usuario.save()
+            
+    context = {
+        'form': UserRegisterForm(
+            initial={
+                'username':usuario.username,
+                'first_name': usuario.first_name,
+                'last_name': usuario.last_name,
+                'email': usuario.email
+            }
+        ),
+        'Button_value': 'Edit',
+        'method': 'POST',
+        'title': 'EDITAR',
+        'info': 'Edición de usuario',
+    }
+    return render(request, 'AppUser/formulario_universal.html', context)
+    
