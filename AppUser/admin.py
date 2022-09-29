@@ -1,3 +1,7 @@
 from django.contrib import admin
+from AppUser.models import *
 
-# Register your models here.
+
+admin.site.register(Avatar)
+admin.site.register(Comentario)
+

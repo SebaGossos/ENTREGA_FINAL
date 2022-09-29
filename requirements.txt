@@ -3,3 +3,9 @@ Django==4.1.1
 Pillow==9.2.0
 sqlparse==0.4.2
 tzdata==2022.2
+
+# comentarios de planes turisticos:
+# - Titulo
+# - Subtitulo 
+# - Detalle
+# - Usuario que hizo el comentario
