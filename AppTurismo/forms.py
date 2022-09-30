@@ -1,4 +1,5 @@
 from django import forms
+from AppUser.models import Comentario
 
 
 class PaqueteTuristicoFormulario(forms.Form):
@@ -7,6 +8,13 @@ class PaqueteTuristicoFormulario(forms.Form):
     fecha_de_entrada = forms.DateField()
     fecha_de_salida = forms.DateField()
     
+    
+class ComentarioFormulario(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ('comentario',)
+
+
 
 class ClienteFormulario(forms.Form):
     

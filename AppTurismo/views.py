@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from AppUser.models import Comentario
 from AppTurismo.forms import *
 from AppTurismo.models import *
 import random
@@ -13,25 +14,37 @@ def inicio(request):
 def paquete_turistico (request):
     
     if request.method == 'POST':
-        mi_formulario = PaqueteTuristicoFormulario(request.POST)
         
-        if mi_formulario.is_valid():
+        mi_formulario = PaqueteTuristicoFormulario(request.POST)
+        mi_formulario1 = ComentarioFormulario(request.POST)
+
+        if mi_formulario.is_valid() and mi_formulario1.is_valid():
             
             data = mi_formulario.cleaned_data
+            data1 =  mi_formulario1.cleaned_data
             
-            paquete1 = PaqueteTuristico(lugares=data.get('lugares'), fecha_de_entrada=data.get('fecha_de_entrada'),  fecha_de_salida=data.get('fecha_de_salida'))
+
+
+            paquete1 = PaqueteTuristico(lugares=data.get('lugares'), fecha_de_entrada=data.get('fecha_de_entrada'),
+                                        fecha_de_salida=data.get('fecha_de_salida'))
             paquete1.save()
+            
+            comentario1 = Comentario(user=request.user, comentario= data1.get('comentario'),paquete_turistico=paquete1)
+            comentario1.save()
             
             return redirect('AppCliente')
 
         else:    
             messages.error(request, 'error del paquete')
+            messages.error(request, mi_formulario.errors)
+            messages.error(request, mi_formulario1.errors)
         
             return redirect('AppTurismoPaquete')
         
     
     context = {
         'form': PaqueteTuristicoFormulario(),
+        'form1': ComentarioFormulario,
         'method': 'POST',
         'title': 'PAQUETE TURISTICO',
         'Button_value': 'Enviar',

@@ -3,11 +3,13 @@ from django.db import models
 
 
 
-class PaqueteTuristico (models.Model):    
+
+
+class PaqueteTuristico(models.Model):    
     lugares = models.CharField(max_length= 33)
     fecha_de_entrada = models.DateField()
     fecha_de_salida = models.DateField()
-
+    
 
 class Cliente (models.Model):
     nombre = models.CharField(max_length=33)

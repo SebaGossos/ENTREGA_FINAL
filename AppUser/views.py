@@ -114,7 +114,7 @@ def upload_avatar (request):
             
             if len(avatar) > 0:
                 avatar = avatar[0]
-                avatar.imagen = formulario.cleaned_data['imagen']
+                avatar.imagen = data.get('imagen')
                 avatar.save()
                 messages.info(request,'Se edito la imagen')
             else:
