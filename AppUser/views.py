@@ -37,7 +37,7 @@ def login_request (request):
         'Button_value': 'Login',
         'method': 'POST',
         'title': 'LOGIN',
-        'info': 'Inicio de Sesion',
+        'info': 'Inicio de Sesion:',
     }    
     
     return render(request, 'AppUser/formulario_universal.html', context)

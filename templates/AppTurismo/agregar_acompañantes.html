@@ -1,0 +1,14 @@
+{% extends 'index.html'%}
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+{% block inicio %}
+    <h2>Deseas agregar un acompañante?</h2>
+    <ul>
+        <h2><a href="{% url 'AppCliente' %}">SI</a></h2>
+        <h2><a href="{% url 'AppInicio' %}">NO</a></h2>
+    </ul>
+
+{% endblock inicio %}

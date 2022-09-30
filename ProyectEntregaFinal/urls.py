@@ -20,7 +20,7 @@ from django.urls import path, include
 from django.shortcuts import redirect
 
 urlpatterns = [
-    path('', lambda req: redirect('AppUserLogin')),
+    path('', lambda req: redirect('AppInicio')),
     path('admin/', admin.site.urls),
     path('AppTurismo/', include('AppTurismo.urls')),
     path('User/', include('AppUser.urls')),

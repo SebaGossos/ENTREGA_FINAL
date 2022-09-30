@@ -6,11 +6,12 @@
 
 {% block inicio %}
 
+    <h4>{{info}}</h4><br>
+    <h4>{{ info1 }}</h4><br>
     <form action= '' method='{{ method }}'>
     {% csrf_token %}
-
+        
         {{form.as_p}}
-        <h4>{{info}}</h4>
         {{form1.as_p}}
 
         <input type='submit' value={{Button_value}}>

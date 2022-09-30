@@ -26,13 +26,13 @@ def paquete_turistico (request):
 
 
             paquete1 = PaqueteTuristico(lugares=data.get('lugares'), fecha_de_entrada=data.get('fecha_de_entrada'),
-                                        fecha_de_salida=data.get('fecha_de_salida'))
+                                        fecha_de_salida=data.get('fecha_de_salida'), user=request.user)
             paquete1.save()
             
             comentario1 = Comentario(user=request.user, comentario= data1.get('comentario'),paquete_turistico=paquete1)
             comentario1.save()
             
-            return redirect('AppCliente')
+            return redirect('AppAgregarAcompañantes')
 
         else:    
             messages.error(request, 'error del paquete')
@@ -46,11 +46,21 @@ def paquete_turistico (request):
         'form': PaqueteTuristicoFormulario(),
         'form1': ComentarioFormulario,
         'method': 'POST',
+        'info':'LLenar Formulario',
         'title': 'PAQUETE TURISTICO',
         'Button_value': 'Enviar',
         
     }
     return render(request,'AppTurismo/formulario_universal.html', context)
+
+
+def agregar_acompañantes(request):
+    
+    context = {
+        'title': 'AGREGAR ACOMPAÑANTE',
+        
+    }
+    return render(request,'AppTurismo/agregar_acompañantes.html',context)
 
 @login_required
 def cliente (request):
@@ -75,12 +85,14 @@ def cliente (request):
                 messages.error(request, 'error del cliente')
                 return redirect('AppCliente')
     
-    
+    nombre_completo = f'{request.user.first_name} {request.user.last_name}'
     context = {
         'form': ClienteFormulario(),
         'method': 'POST',
         'title': 'FORMULARIO CLIENTE',
         'Button_value': 'Enviar',
+        'info': nombre_completo,
+        'info1': 'A quien deseas agregar como acompañante???'
         
     }
     

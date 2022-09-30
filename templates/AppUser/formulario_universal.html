@@ -10,12 +10,14 @@
         
     {% csrf_token %}
         <h4>{{info}}</h4>
+        
         {{form.as_p}}
         
         {{form1.as_p}}
 
-        <input style="width: 100px"; type='submit' value={{Button_value}} >
-
+        <input class="btn btn-primary" type='submit' value={{Button_value}} >
+        
+        <a class="btn btn-primary" href="{% url 'AppUserRegister' %}">Register</a>
     </form>
 
 

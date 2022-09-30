@@ -6,7 +6,7 @@ from AppTurismo.models import PaqueteTuristico
 
 
 class Comentario(models.Model):
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     comentario = models.CharField(max_length= 150)
     paquete_turistico = models.OneToOneField(PaqueteTuristico, on_delete=models.CASCADE, null=True, blank=True)
     
