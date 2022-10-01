@@ -5,22 +5,42 @@
 {% endblock title %}
 
 {% block inicio %}
+
+    {% for paquete in info %}
+    <h2>Paquete contratado:<br></h2>
+    Lugar Contratado: {{ paquete.lugares }}<br>
+    Fecha de entrada: {{ paquete.fecha_de_entrada }}<br>
+    Fecha de salida: {{ paquete.fecha_de_salida }}<br>
+    <h2><a href="{% url 'AppEliminarPaquete' paquete.id %}">BORRAR PAQUETE</a></h2>    
+
+        {% for cosa in info1 %}
+            <h4>Acompañante:<br></h4>
+            Nombre:  {{ cosa.nombre }} <br>
+            Apellido:  {{ cosa.apellido }} <br>
+            Email:  {{ cosa.email }} <br>
+            Celular:  {{ cosa.celular }} <br>
+            Dni:  {{ cosa.dni }} <br>
+            Emplado a cargo del cliente:  {{ cosa.empleado_asignado }} <br><br>
+            <h2><a href="{% url 'AppEliminarPeticion' cosa.dni %}">BORRAR ACOMPAÑANTE</a></h2>
+            <h2><a href="{% url 'AppEditarAcompanante' cosa.dni %}">EDITAR ACOMPAÑANTE</a></h2>
+        {% endfor %}
+    {% endfor %}
+
     
-    {% for info in dni %}
-        Nombre:  {{ info.nombre }} <br>
-        Apellido:  {{ info.apellido }} <br>
-        Email:  {{ info.email }} <br>
-        Celular:  {{ info.celular }} <br>
-        Dni:  {{ info.dni }} <br>
-        Emplado a cargo del cliente:  {{ info.empleado_asignado }} <br>
+    {% for cosa in info12 %}
+        Nombre:  {{ cosa.nombre }} <br>
+        Apellido:  {{ cosa.apellido }} <br>
+        Email:  {{ cosa.email }} <br>
+        Celular:  {{ cosa.celular }} <br>
+        Dni:  {{ cosa.dni }} <br>
+        Emplado a cargo del cliente:  {{ cosa.empleado_asignado }} <br>
         <h2> Paquete contratado: </h2>
-        {% for paquete in id %}
+        {% for paquete in info1 %}
             Lugar Contratado: {{ paquete.lugares }}<br>
             Fecha de entrada: {{ paquete.fecha_de_entrada }}<br>
             Fecha de salida: {{ paquete.fecha_de_salida }}<br><br>
         {% endfor %}
-        <h4>Apriete la X si desea eliminar la petición de su viaje <br><h2><a href="{% url 'AppEliminarPeticion' info.dni %}">BORRAR CLIENTE</a></h2></h4>
-        <h2><a href="{% url 'AppEditarCliente' info.dni %}">EDITAR CLIENTE</a></h2>
+
     {% endfor %}
 
 {% endblock inicio %}

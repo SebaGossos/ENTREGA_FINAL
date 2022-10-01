@@ -7,6 +7,9 @@ urlpatterns = [
     path('busqueda_peticion', busqueda_de_peticion, name='AppBusquedaPeticion'),
     path('busqueda_peticion_post/', busqueda_peticion_post, name='AppBusquedaPeticionPost'),
     path('eliminar_peticion/<int:dni>', elminar_peticion, name='AppEliminarPeticion'),
-    path('editar_cliente/<int:dni>', editar_cliente, name= 'AppEditarCliente'),
+    path('editar_cliente/<int:dni>', editar_cliente, name= 'AppEditarAcompanante'),
     path('agregar_acompñante/',agregar_acompañantes, name='AppAgregarAcompañantes'),
-]
+    path('paquetes_contratados/', paquete_contratado, name='AppPaqueteContratado'),
+    path('eliminar_paquete/<int:id>', eliminar_paquete, name='AppEliminarPaquete'),
+    
+] 

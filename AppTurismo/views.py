@@ -1,3 +1,4 @@
+import re
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -5,6 +6,9 @@ from AppUser.models import Comentario
 from AppTurismo.forms import *
 from AppTurismo.models import *
 import random
+from datetime import date, datetime
+
+
 
 @login_required
 def inicio(request):
@@ -53,7 +57,7 @@ def paquete_turistico (request):
     }
     return render(request,'AppTurismo/formulario_universal.html', context)
 
-
+@login_required
 def agregar_acompañantes(request):
     
     context = {
@@ -62,27 +66,35 @@ def agregar_acompañantes(request):
     }
     return render(request,'AppTurismo/agregar_acompañantes.html',context)
 
+
+
 @login_required
 def cliente (request):
     names = ['Messi', 'Cr7', 'Alberto', 'Mirta', 'Raul', 'Ibai']
     choice_name = random.choice(names)
+    paquete= PaqueteTuristico.objects.last()
+
     
     if request.method == 'POST':
         formulario_cliente = ClienteFormulario(request.POST)
         
         if formulario_cliente.is_valid():
             data = formulario_cliente.cleaned_data
-            
-            cliente1 = Cliente(nombre= data.get('nombre'), apellido= data.get('apellido'),
-                    email= data.get('email'), celular= data.get('celular'),
-                    dni= data.get('dni'), empleado_asignado= choice_name, 
-                    )
             try:
+                cliente1 = Cliente(nombre= data.get('nombre'), apellido= data.get('apellido'),
+                        email= data.get('email'), celular= data.get('celular'),
+                        dni= data.get('dni'), empleado_asignado= choice_name, 
+                        user=request.user)
+           
                 cliente1.save()
+                paquete_acompanante = PaqueteAcompanante(user=request.user, paquete_turistico= paquete, cliente=cliente1)
+                paquete_acompanante.save()
+
                 messages.info(request, 'Se guardo su paquete de viaje')
                 return redirect('AppInicio')
             except:
                 messages.error(request, 'error del cliente')
+                messages.error(request, cliente1.errors)
                 return redirect('AppCliente')
     
     nombre_completo = f'{request.user.first_name} {request.user.last_name}'
@@ -108,8 +120,8 @@ def busqueda_peticion_post (request):
         paquete_editar = PaqueteTuristico.objects.filter(id__exact=id.id)
     
     context = {
-    'id': paquete_editar,
-    'dni': cliente1,
+    'info1': paquete_editar,
+    'info': cliente1,
     'title': 'BUSQUEDA CLIENTE',    
     }    
     return render(request, 'AppTurismo/busqueda_peticion_post.html', context)
@@ -131,9 +143,9 @@ def elminar_peticion(request, dni):
     
     cliente_eliminar = Cliente.objects.get(dni=dni)
     cliente_eliminar.delete()
-    messages.info(request, f'El Cliente {cliente_eliminar} fue eliminado')
+    messages.info(request, f'El Acompañante {cliente_eliminar} fue eliminado')
     
-    return redirect('AppInicio')
+    return redirect('AppPaqueteContratado')
 
 @login_required
 def editar_cliente(request, dni):
@@ -196,4 +208,29 @@ def editar_cliente(request, dni):
         }
     
         return render(request, 'AppTurismo/formulario_universal.html', context)
+    
+@login_required    
+def eliminar_paquete(request, id):
+
+    paquete_eliminar = PaqueteTuristico.objects.get(id=id)
+    paquete_eliminar.delete()
+    messages.info(request, f'El Paquete {paquete_eliminar} fue eliminado')
+    
+    return redirect ('AppPaqueteContratado')
+
+
+
+@login_required
+def paquete_contratado(request):
+    
+    paquetes = PaqueteTuristico.objects.filter(user=request.user)
+    acompanantes = Cliente.objects.filter(user=request.user)
+    context = {
+        'info': paquetes,
+        'info1': acompanantes,
+    }
+        
+        
+    return render(request,'AppTurismo/busqueda_peticion_post.html', context)
+    
     

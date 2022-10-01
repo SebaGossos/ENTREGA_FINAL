@@ -16,8 +16,10 @@
         {{form1.as_p}}
 
         <input class="btn btn-primary" type='submit' value={{Button_value}} >
-        
-        <a class="btn btn-primary" href="{% url 'AppUserRegister' %}">Register</a>
+        {% if  info1  == 'yes' %}
+            <a class="btn btn-primary" href="{% url 'AppUserAvatar' %}">Cargar imagen de usuario</a>
+
+        {% endif %}
     </form>
 
 

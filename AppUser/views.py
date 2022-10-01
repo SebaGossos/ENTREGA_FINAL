@@ -86,6 +86,8 @@ def edit_user(request):
         else:    
 
             messages.info(request, 'No se modificaron los cambios')         
+
+    
     context = {
         'form': UserRegisterForm(
             initial={
@@ -99,6 +101,7 @@ def edit_user(request):
         'method': 'POST',
         'title': 'EDITAR',
         'info': 'Edición de usuario',
+        'info1': 'yes',
     }
     return render(request, 'AppUser/formulario_universal.html', context)
     
@@ -118,7 +121,7 @@ def upload_avatar (request):
                 avatar.save()
                 messages.info(request,'Se edito la imagen')
             else:
-                avatar = Avatar(user=data.get('user'), imagen=data.get('imagen'))
+                avatar = Avatar(user=request.user, imagen=data.get('imagen'))
                 avatar.save()
                 messages.info(request,'Se guardo la imagen')
                 
