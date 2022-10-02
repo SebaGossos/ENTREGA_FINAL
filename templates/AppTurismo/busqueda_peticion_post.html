@@ -7,23 +7,36 @@
 {% block inicio %}
 
     {% for paquete in info %}
-    <h2>Paquete contratado:<br></h2>
-    Lugar Contratado: {{ paquete.lugares }}<br>
-    Fecha de entrada: {{ paquete.fecha_de_entrada }}<br>
-    Fecha de salida: {{ paquete.fecha_de_salida }}<br>
-    <h2><a href="{% url 'AppEliminarPaquete' paquete.id %}">BORRAR PAQUETE</a></h2>    
+    <h2 style="color: red;" >Paquete contratado:<br></h2>
+        {% if  paquete.lugares == 1 %}
+            Lugar Contratado: Amsterdam <br>
+        {% elif paquete.lugares == 2 %}
+            Lugar Contratado: Rio de Janeiro <br>
+        {% elif paquete.lugares == 3 %}
+            Lugar Contratado: Barcelona <br>
+        {% elif paquete.lugares == 4 %}
+            Lugar Contratado: Miami <br>
+        {% elif paquete.lugares == 5 %}
+            Lugar Contratado: Mendoza <br>
+        {% elif paquete.lugares == 6 %}
+            Lugar Contratado: Buenos Aires <br>
+        {% endif %}
+        Fecha de entrada: {{ paquete.fecha_de_entrada }}<br>
+        Fecha de salida: {{ paquete.fecha_de_salida }}<br>
+        Empleado empleado asignado de este paquete: {{ paquete.empleado_asignado }}<br>
 
-        {% for cosa in info1 %}
-            <h4>Acompañante:<br></h4>
-            Nombre:  {{ cosa.nombre }} <br>
-            Apellido:  {{ cosa.apellido }} <br>
-            Email:  {{ cosa.email }} <br>
-            Celular:  {{ cosa.celular }} <br>
-            Dni:  {{ cosa.dni }} <br>
-            Emplado a cargo del cliente:  {{ cosa.empleado_asignado }} <br><br>
-            <h2><a href="{% url 'AppEliminarPeticion' cosa.dni %}">BORRAR ACOMPAÑANTE</a></h2>
-            <h2><a href="{% url 'AppEditarAcompanante' cosa.dni %}">EDITAR ACOMPAÑANTE</a></h2>
-        {% endfor %}
+            {% for cosa in info1 %}
+                <h2><a href="{% url 'AppEliminarPaquete' paquete.id cosa.dni %}">BORRAR PAQUETE</a></h2><br><br> 
+                <h4 style="color: green;">Acompañante:<br></h4>
+                Nombre:  {{ cosa.nombre }} <br>
+                Apellido:  {{ cosa.apellido }} <br>
+                Email:  {{ cosa.email }} <br>
+                Celular:  {{ cosa.celular }} <br>
+                Dni:  {{ cosa.dni }} <br>
+                <h2><a href="{% url 'AppEliminarPeticion' cosa.dni %}">BORRAR ACOMPAÑANTE</a></h2>
+                <h2><a href="{% url 'AppEditarAcompanante' cosa.dni %}">EDITAR ACOMPAÑANTE</a></h2>
+
+            {% endfor %}
     {% endfor %}
 
     

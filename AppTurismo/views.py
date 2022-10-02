@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from AppUser.models import Comentario
 from AppTurismo.forms import *
 from AppTurismo.models import *
-import random
+from AppTurismo.choices import choice_name
 from datetime import date, datetime
 
 
@@ -30,7 +30,7 @@ def paquete_turistico (request):
 
 
             paquete1 = PaqueteTuristico(lugares=data.get('lugares'), fecha_de_entrada=data.get('fecha_de_entrada'),
-                                        fecha_de_salida=data.get('fecha_de_salida'), user=request.user)
+                                        fecha_de_salida=data.get('fecha_de_salida'), empleado_asignado = choice_name , user=request.user)
             paquete1.save()
             
             comentario1 = Comentario(user=request.user, comentario= data1.get('comentario'),paquete_turistico=paquete1)
@@ -66,15 +66,10 @@ def agregar_acompañantes(request):
     }
     return render(request,'AppTurismo/agregar_acompañantes.html',context)
 
-
-
 @login_required
 def cliente (request):
-    names = ['Messi', 'Cr7', 'Alberto', 'Mirta', 'Raul', 'Ibai']
-    choice_name = random.choice(names)
-    paquete= PaqueteTuristico.objects.last()
 
-    
+    paquete= PaqueteTuristico.objects.last()
     if request.method == 'POST':
         formulario_cliente = ClienteFormulario(request.POST)
         
@@ -83,12 +78,12 @@ def cliente (request):
             try:
                 cliente1 = Cliente(nombre= data.get('nombre'), apellido= data.get('apellido'),
                         email= data.get('email'), celular= data.get('celular'),
-                        dni= data.get('dni'), empleado_asignado= choice_name, 
-                        user=request.user)
-           
+                        dni= data.get('dni'), user=request.user)
+                
                 cliente1.save()
-                paquete_acompanante = PaqueteAcompanante(user=request.user, paquete_turistico= paquete, cliente=cliente1)
-                paquete_acompanante.save()
+
+                paquete_acompanante1 = PaqueteAcompanante(user=request.user, paquete_turistico= paquete, cliente=cliente1)
+                paquete_acompanante1.save()
 
                 messages.info(request, 'Se guardo su paquete de viaje')
                 return redirect('AppInicio')
@@ -109,34 +104,6 @@ def cliente (request):
     }
     
     return render(request, 'AppTurismo/formulario_universal.html', context)
-
-@login_required
-def busqueda_peticion_post (request):
-    
-    dni = request.GET.get('dni')
-    cliente1 = Cliente.objects.filter(dni__exact=dni)
-    idcliente = (cliente1)
-    for id in idcliente:
-        paquete_editar = PaqueteTuristico.objects.filter(id__exact=id.id)
-    
-    context = {
-    'info1': paquete_editar,
-    'info': cliente1,
-    'title': 'BUSQUEDA CLIENTE',    
-    }    
-    return render(request, 'AppTurismo/busqueda_peticion_post.html', context)
-
-@login_required
-def busqueda_de_peticion(request):
-
-    context = {
-        'form': BusquedaPeticionFormulario(),
-        'title': 'BUSQUEDA PETICIÓN',
-        'Button_value': 'Buscar',
-        
-    }        
-    
-    return render(request, 'AppTurismo/busqueda_paquete.html', context)
 
 @login_required
 def elminar_peticion(request, dni):
@@ -210,27 +177,45 @@ def editar_cliente(request, dni):
         return render(request, 'AppTurismo/formulario_universal.html', context)
     
 @login_required    
-def eliminar_paquete(request, id):
-
-    paquete_eliminar = PaqueteTuristico.objects.get(id=id)
-    paquete_eliminar.delete()
-    messages.info(request, f'El Paquete {paquete_eliminar} fue eliminado')
+def eliminar_paquete(request, id, dni):
+    cliente_eliminar = Cliente.objects.get(dni=dni)
+    cliente_eliminar.delete()
+    
+    paquete = PaqueteTuristico.objects.get(id=id)
+    paquete.delete()
+    
+    messages.info(request, f'El Paquete {paquete} fue eliminado')
     
     return redirect ('AppPaqueteContratado')
 
-
+# def editar_paquete(request,):
+    
 
 @login_required
 def paquete_contratado(request):
     
     paquetes = PaqueteTuristico.objects.filter(user=request.user)
     acompanantes = Cliente.objects.filter(user=request.user)
+
     context = {
         'info': paquetes,
-        'info1': acompanantes,
+        'info1': acompanantes,    
     }
         
-        
     return render(request,'AppTurismo/busqueda_peticion_post.html', context)
+
+def politica_de_privacidad(request):
+    
+    context = {
+        'info': 'El usuario otorga su consentimiento informado de las siguientes cuestiones: El acceso a la información del usuario queda restringido al propio usuario mediante el uso de su “palabra clave” o contraseña. Coderhouse se reserva el derecho de compartir los datos necesarios con entidades relacionadas con los temas aprendidos, por ejemplo en el marco de búsquedas laborales, teniendo en cuenta el mejor interés de los estudiantes. Coderhouse no venderá ningún tipo de información a entidades externas ni utilizará datos de los estudiantes con fines publicitarios. Únicamente utilizará datos con fines educativos  autorizados. Para una mejor comprensión, ver la Política de Protección de Datos Personales que lleva a cabo Coderhouse.'
+    }
+    return render(request,'base/politicas_de_privacidad.html', context)
+
+def acerca_de_mi(request):
+    
+    context = {
+        'info': 'Hola a la persona que este corrigiendo este proyecto. Honestamente, estoy super agradecido con coder house por permitirme conocer un poco de lo que es ser un programador. se que mi web no es la mejor pero estoy orgulloso de mi por conseguir todo esto, empezando desde 0 con este curso de python, me queda mucho por aprender como html, css, base de datos(que de eso solo se lo que el profe explico en clase y me la he pasado viendo explicaciones en youtube de como conectar los models entre si XD.), etx. me inscribi a la carrera de full stack en coder y recien estoy empezando. Me gustaría aclarar que intente hacer este proyecto con mi compañero asignado, tuve comunicacion con el al pricipio pero despues desaparecio y no me contesto mas. lo hice solo y como pude reviendo las clases del profe y buscando info por otros lugares. Bueno como dije al principio estoy absolutamente agradecido.  Nos vemos en la proxima y bendiciones! ' 
+    }
+    return render(request,'base/politicas_de_privacidad.html', context)
     
     

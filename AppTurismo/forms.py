@@ -1,18 +1,24 @@
 from django import forms
 from AppUser.models import Comentario
+from AppTurismo.models import PaqueteTuristico
 
-
-class PaqueteTuristicoFormulario(forms.Form):
+class DateInput(forms.DateInput):
+    input_type = 'date'
+class PaqueteTuristicoFormulario(forms.ModelForm):
     
-    lugares = forms.CharField(max_length= 33)
-    fecha_de_entrada = forms.DateField()
-    fecha_de_salida = forms.DateField()
+    class Meta:
+        model = PaqueteTuristico
+        fields = ['lugares','fecha_de_entrada','fecha_de_salida']
+        widgets = {'fecha_de_entrada':DateInput(), 'fecha_de_salida':DateInput()}
+
     
     
 class ComentarioFormulario(forms.ModelForm):
     class Meta:
         model = Comentario
         fields = ('comentario',)
+
+        
 
 
 

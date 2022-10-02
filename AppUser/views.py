@@ -38,6 +38,7 @@ def login_request (request):
         'method': 'POST',
         'title': 'LOGIN',
         'info': 'Inicio de Sesion:',
+        'info1': 'yes'
     }    
     
     return render(request, 'AppUser/formulario_universal.html', context)
@@ -62,7 +63,6 @@ def register(request):
         'info': 'Registro de usuario',
     }
     return render(request, 'AppUser/formulario_universal.html', context)
-
 
 @login_required
 def edit_user(request):
@@ -101,7 +101,7 @@ def edit_user(request):
         'method': 'POST',
         'title': 'EDITAR',
         'info': 'Edición de usuario',
-        'info1': 'yes',
+        'info2': 'yes',
     }
     return render(request, 'AppUser/formulario_universal.html', context)
     
